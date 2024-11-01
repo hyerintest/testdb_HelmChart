@@ -1,0 +1,65 @@
+service:
+  port:
+    name: http
+    l4_protocol: TCP
+    port: 5432
+    targetPort: 5432
+  label: postgresql-service-1-wovccmkb5x
+  name: postgresql-service-1-wovccmkb5x
+  selector: postgresql-service-1-wovccmkb5x
+  type:
+  - ClusterIP
+  - NodePort
+statefulset:
+  name: postgresql-service-1-wovccmkb5x
+  spec:
+    name: postgresql-service-1-wovccmkb5x
+    servicename: postgresql-service-1-wovccmkb5x
+  replicas: -@replicas@-
+  container:
+    name: postgresql-service-1-wovccmkb5x
+    port: 5432
+  volume:
+    name: pvc-postgresql-service-1-wovccmkb5x
+  resource:
+    request:
+      memory: -@requestMemory@-
+      cpu: -@requestCpu@-
+    limits:
+      memory: -@limitsMemory@-
+      cpu: -@limitsCpu@-
+  hpa:
+    name: hpa-postgresql-service-1-wovccmkb5x
+    minReplicas: -@minReplicas@-
+    maxReplicas: -@maxReplicas@-
+    cpu: -@cpuAutoScale@-
+    memory: -@memAutoScale@-
+namespace: -@namespace@-
+secret:
+  name: 
+  registry:
+    name: regsecret
+    url: -@imageRepoName@-
+    username: -@accessKey@-
+    password: -@secretKey@-
+    email: info@twolinecode.com
+pvc:
+  name: pvc-postgresql-service-1-wovccmkb5x
+  storageClass: tlc-block-sc
+  size: 5Gi
+  accessMode: ReadWriteOnce
+postgres:
+  configmap:
+    name: config-postgresql-service-1-wovccmkb5x
+  secret:
+    name: secret-postgresql-service-1-wovccmkb5x
+    username: test
+    password: "Root1234!"
+    root_password: "Root1234!"
+    database: test
+    dbhost: postgresql-service-1-wovccmkb5x
+    port: 5432
+  statefulset:
+    name: postgresql-service-1-wovccmkb5x
+    image:
+      url: registry.turacocloud.com/turaco-common/postgresql-gis:15-3.3
